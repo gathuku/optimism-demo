@@ -1,4 +1,4 @@
-<%= form_with(model: post) do |form| %>
+<%= form_with(model: post, data: {controller: "comment"}) do |form| %>
   <%= form.container_for :name, class: "field" do %>
     <%= form.label :name %>
     <%= form.text_field :name %>
@@ -24,19 +24,21 @@
   <% end %>
 
   <h3>Nested Comments</h3>
-
-  <%= form.fields_for :comments, post.comments do |comment_form| %>
-    <%= comment_form.container_for :opinion, class: "field" do %>
-      <%= comment_form.hidden_field :id %>
-      <%= comment_form.label :opinion %>
-      <%= comment_form.text_field :opinion %>
-      <%= comment_form.error_for :opinion, class: "danger hide" %>
-      <% unless comment_form.object.new_record? %>
-        <%= comment_form.check_box :_destroy %> Delete
+  <div data-comment-target="comments">
+    <template data-comment-target="template">
+      <%= form.fields_for :comments, Comment.new, child_index: "TEMPLATE_RECORD" do |comment_form| %>
+        <%= render "comment_form", comment_form: comment_form %>
       <% end %>
-    <% end %>
-  <% end %>
+    </template>
 
+    <%= form.fields_for :comments do |comment_form| %>
+      <%= render "comment_form",  comment_form: comment_form %>
+    <% end %>
+
+  </div>
+
+  <button data-action="click->comment#addAssociation" type="button" name="button">Add</button>
+  <br>
   <br>
 
   <div class="actions">

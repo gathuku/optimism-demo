@@ -13,7 +13,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @post = Post.new
-    @post.comments.build
+    # 3.times { @post.comments.build }
   end
 
   # GET /posts/1/edit
@@ -28,6 +28,7 @@ class PostsController < ApplicationController
       if @post.save
         redirect_to @post, notice: 'Post was successfully created.'
       else
+        pp @post.errors.messages
         broadcast_errors @post, post_params
       end
   end

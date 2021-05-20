@@ -1,0 +1,11 @@
+<div class="comment-fields">
+<%= comment_form.container_for :opinion, class: "field" do %>
+  <%= comment_form.hidden_field :id %>
+  <%= comment_form.label :opinion %>
+  <%= comment_form.text_field :opinion %>
+  <%= comment_form.error_for :opinion, class: "danger hide" %>
+  <% unless comment_form.object.new_record? %>
+    <%= comment_form.check_box :_destroy %> Delete
+  <% end %>
+<% end %>
+</div>
